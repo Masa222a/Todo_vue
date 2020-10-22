@@ -20,7 +20,26 @@ const app = new Vue({
   el: '#app',
   
   data: {
-    todos: []
+    todos: [],
+    
+    options: [
+      { value: -1, label: 'すべて' },
+      { value: 0, label: '作業中' },
+      { value: 1, label: '完了' }
+    ],
+    //選択しているoptionsのvalueを記憶するためのデータ
+    //初期値を「-1」の「すべて」にする
+    current: -1
+  },
+  
+  computed: {
+    computedTodos: function() {
+      //データcurrentが-1ならすべて
+      //それ以外ならcurrentとstateが一致するものだけに絞り込む
+      return this.todos.filter(function(el) {
+        return this.current <0 ? true : this.current === el.state
+      }, this)
+    }
   },
   
   methods: {
@@ -45,6 +64,17 @@ const app = new Vue({
       
       //フォーム要素を空にする
       comment.value = ''
+    },
+    
+    //状態の処理
+    doChangeState: function(item) {
+      item.state = item.state ? 0 : 1
+    },
+    
+    //削除の処理
+    doRemove: function(item) {
+      var index = this.todos.indexOf(item)
+      this.todos.splice(index, 1)
     }
   },
   
