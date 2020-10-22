@@ -14,6 +14,8 @@
              v-bind:value="label.value">{{ label.label }}
     </label>
     
+    {{ computedTodos.length }}件を表示中    
+    
     <!-- ToDo テーブル -->
     <table>
       <thead>
@@ -26,8 +28,10 @@
       </thead>
       <tbody>
         <!-- [1] ここに <tr> で ToDo の要素を1行づつ繰り返し表示 -->
-        <tr v-for="item in computedTodos" v-bind:key="item.id">
-          <br>{{ computedTodos.length }}件を表示中
+        <tr v-for="item in computedTodos" 
+            v-bind:key="item.id"
+            v-bind:class="{done:item.state}">
+
           <!-- 要素の情報 -->
           <th>{{ item.id }}</th>
           <td>{{ item.comment }}</td>
@@ -35,15 +39,20 @@
           <!-- 状態表示 -->
           <td class="state">
             <!-- 状態変更ボタンのモック -->
-            <button v-on:click="doChangeState(item)">{{ labels[item.state] }}</button>
+            <button v-on:click="doChangeState(item)">
+              {{ labels[item.state] }}
+            </button>
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
-            <button v-on:click.ctrl="doRemove(item)">削除</button>
+            <button v-on:click.ctrl="doRemove(item)">
+              削除
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <p>※削除ボタンはコントロールキーを押しながらクリックして下さい</p>
     
     <!-- 新規登録フォーム -->
     <h2>新しい作業の追加</h2>
